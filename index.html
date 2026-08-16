@@ -1,24 +1,166 @@
 <!doctype html>
-<html lang="en-AU">
+<html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>COMP4020 prototype</title>
+    <title>The Stop Hunt — why your stop-loss is a target, not a safety net</title>
     <link rel="stylesheet" href="./styles.css" />
   </head>
   <body>
-    <header>
-      <nav aria-label="Primary">
-        <a href="./">Home</a>
+    <header class="topbar">
+      <nav aria-label="Acts">
+        <a href="#act-1">Act 1</a>
+        <a href="#act-2">Act 2</a>
+        <a href="#act-3">Act 3</a>
       </nav>
     </header>
+
+    <nav class="slide-dots" aria-label="Slide navigation">
+      <button type="button" class="slide-dot" data-slide="hero" aria-label="Go to intro"></button>
+      <button type="button" class="slide-dot" data-slide="act-1" aria-label="Go to Act 1"></button>
+      <button type="button" class="slide-dot" data-slide="act-2" aria-label="Go to Act 2"></button>
+      <button type="button" class="slide-dot" data-slide="act-3" aria-label="Go to Act 3"></button>
+    </nav>
+
     <main>
-      <h1>COMP4020 prototype</h1>
-      <p data-testid="intro">
-        Replace this with your prototype. This week's brief is on the course website;
-        <code>spec/README.md</code> explains how the checks in this repo relate to it.
-      </p>
+      <section id="hero" class="hero">
+        <h1>The Stop Hunt</h1>
+        <p class="hero-sub">
+          Your stop-loss doesn't protect you. It tells everyone else exactly
+          where to find you.
+        </p>
+        <p class="hero-hint">Scroll to play.</p>
+      </section>
+
+      <section id="act-1" class="act" aria-labelledby="act-1-heading">
+        <p class="act-kicker">01 — Individual</p>
+        <h2 id="act-1-heading">Act 1 — Place your trade</h2>
+        <p class="act-intro">
+          Watch the price climb, then decide where to protect yourself.
+        </p>
+        <p class="act-tally" id="act1-tally" aria-live="polite">Attempt 1</p>
+        <div class="chart-wrap">
+          <canvas
+            id="act-1-canvas"
+            class="chart-canvas"
+            role="img"
+            aria-label="Act 1 candlestick chart: loading"
+          ></canvas>
+          <p class="chart-fallback" id="act-1-fallback" hidden>
+            Canvas is unavailable — the interactive chart cannot render here.
+          </p>
+        </div>
+        <div class="controls" id="act-1-controls">
+          <label class="control-row">
+            <span>Position size</span>
+            <input
+              type="range"
+              id="act1-size"
+              min="1"
+              max="10"
+              value="3"
+              step="1"
+              aria-label="Position size multiplier"
+            />
+            <span id="act1-size-value" class="control-value">3x</span>
+          </label>
+          <p class="hint" id="act1-hint" aria-live="polite">Watching price climb…</p>
+          <button type="button" id="act1-confirm" disabled>Confirm stop &amp; watch</button>
+        </div>
+        <div class="result-panel" id="act1-result" hidden></div>
+      </section>
+
+      <section id="act-2" class="act" aria-labelledby="act-2-heading">
+        <p class="act-kicker">02 — Statistical</p>
+        <h2 id="act-2-heading">Act 2 — It wasn't just you</h2>
+        <p class="act-intro">
+          Run the same setup a thousand times, then try hunting the stops
+          yourself.
+        </p>
+        <div class="chart-wrap">
+          <canvas
+            id="act-2-canvas"
+            class="chart-canvas"
+            role="img"
+            aria-label="Act 2 hunt simulator: loading"
+          ></canvas>
+          <p class="chart-fallback" id="act-2-fallback" hidden>
+            Canvas is unavailable — the interactive simulator cannot render
+            here.
+          </p>
+          <div class="pulse-hint" id="act2-pulse-hint" aria-hidden="true"></div>
+        </div>
+        <div class="controls" id="act-2-controls">
+          <label class="control-row">
+            <span>Stop density</span>
+            <input
+              type="range"
+              id="act2-density"
+              min="0"
+              max="10"
+              value="5"
+              step="1"
+              aria-label="Stop density: how tightly retail stops cluster"
+            />
+            <span id="act2-density-value" class="control-value">5</span>
+          </label>
+          <p class="hint">Drag inside the chart to choose how far you push price down.</p>
+        </div>
+        <p class="hint" id="act2-readout" aria-live="polite">
+          <strong id="act2-count">0</strong> of <span id="act2-total"></span> stops triggered
+          (<span id="act2-pct"></span>) — <span id="act2-efficiency"></span> stops hunted per % moved.
+          <span class="verdict-badge" id="act2-badge"></span>
+        </p>
+      </section>
+
+      <section id="act-3" class="act" aria-labelledby="act-3-heading">
+        <p class="act-kicker">03 — Systemic</p>
+        <h2 id="act-3-heading">Act 3 — The whole system</h2>
+        <p class="act-intro">
+          Zoom out: where does everyone's money actually go?
+        </p>
+        <div class="chart-wrap">
+          <canvas
+            id="act-3-canvas"
+            class="chart-canvas"
+            role="img"
+            aria-label="Act 3 wealth-flow visualization: loading"
+          ></canvas>
+          <p class="chart-fallback" id="act-3-fallback" hidden>
+            Canvas is unavailable — the flow visualization cannot render here.
+          </p>
+        </div>
+        <div class="controls" id="act-3-controls">
+          <button type="button" id="act3-runday" class="btn-primary">Run the day →</button>
+          <label class="control-row">
+            <span>Hunt depth</span>
+            <input
+              type="range"
+              id="act3-depth"
+              min="0"
+              max="20"
+              value="6"
+              step="0.5"
+              aria-label="Hunt depth percent"
+            />
+            <span id="act3-depth-value" class="control-value">6.0%</span>
+          </label>
+          <button type="button" id="act3-whatif">What if stops were spread out?</button>
+        </div>
+        <p class="hint" id="act3-readout" aria-live="polite"></p>
+        <p class="result-point" id="act3-callout" hidden></p>
+        <p class="hint" id="act3-explore-hint" hidden>
+          Now explore freely — try a different depth or toggle the clustering.
+        </p>
+      </section>
     </main>
+
+    <footer class="footnote">
+      <p>
+        Every chart on this page is a synthetic simulation built to teach one
+        idea. No real market data, no real trades, no financial advice.
+      </p>
+    </footer>
     <script type="module" src="./main.ts"></script>
   </body>
 </html>
