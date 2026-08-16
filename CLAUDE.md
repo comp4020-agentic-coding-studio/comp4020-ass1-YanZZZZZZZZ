@@ -160,3 +160,79 @@ catching you out, a fact about the stack the agent keeps getting wrong --- write
 it down here. Growing this file is the work of harness engineering, and the gap
 between this boilerplate and your own version is part of what your prototype
 says about the developer you're becoming.
+
+# CLAUDE.md – HD-Level Collaboration Rules for This Project
+
+## 1. Project Mindset
+- We are building an **interactive explainer**: a stop-hunt / liquidity-sweep
+  market simulator that teaches one idea — a retail trader's stop-loss isn't a
+  safety net, it's a target, especially when everyone's stops cluster at the
+  same predictable price levels. One mechanic (stop clustering + price
+  manipulation), experienced at three resolutions — individual (Act 1),
+  statistical (Act 2), systemic (Act 3) — not three different topics.
+- All market data is **synthetic and must be labelled as such** on the page —
+  this is a teaching simulation, not real financial data or advice.
+- The final grade (HD) depends 45% on **process legibility**. Commit history must show incremental work, not a single bulk upload.
+
+## 2. Git & Commit Protocol (CRITICAL for HD)
+- **Explicitly tell the user when to commit.**
+- In every response, at the end of code delivery, list **3 specific checkpoints** (tailored to what was actually built, e.g., "Checkpoint 1: layout complete", "Checkpoint 2: data loaded", "Checkpoint 3: slider wired up") with a corresponding `git commit -m "..."` command for each.
+- **Commit message format**: conventional commits (`feat: ...`, `fix: ...`, `style: ...`).
+- **Frequency**: aim for at least 8–10 commits over several days. Never suggest bundling everything into one commit.
+
+## 3. Code Delivery Strategy (Prevent Overwriting)
+- **Never assume the user will replace their entire file** with new output unless they explicitly say so.
+- When updating code, output the full updated file, but **clearly highlight the specific functions or blocks that changed** (e.g., "I only modified `updateFace()` and added `lerp()` helper").
+- **Best practice**: read the current file before touching it, and output a modified version that preserves existing work while adding the new feature.
+
+## 4. Fixing Bugs the "HD Way" (Harness vs. Re-prompting)
+- If something doesn't work smoothly (e.g., a simulation stutters, a drag interaction feels laggy), **do not suggest a full rewrite of the whole logic**.
+- Instead, suggest a code-level correction the user can manually insert into their existing file and then commit. Examples:
+  - "Add a `lerp()` helper and wrap the eased value."
+  - "Add a `requestAnimationFrame` loop to smooth the slider updates."
+- This is how the user demonstrates "skilled directing" in `PROCESS.md` — fixing issues at the harness level rather than cycling prompts.
+
+## 5. Coding Standards (Keep it Modular)
+- Write pure vanilla JS (no frameworks).
+- Keep functions small and single-purpose (e.g., `getEmotion()`, `updateFace()`, `renderChart()`).
+- Add comments for any non-obvious logic — the user needs to explain these in their reflection.
+
+## 6. Final Reminder
+- After every major feature, remind the user: "Now commit with `git add . && git commit -m '...'`."
+- If the user sends a long code file, the job is to **modify** it, not replace it from scratch.
+
+# Project Charter Update — Hanzi Flow (supersedes the stop-hunt topic above)
+
+The rules in sections 1–6 above stay as written (added to, not replaced). This
+section records that the **topic** they were written for has changed.
+
+## What this project is now
+
+**Hanzi Flow** (汉字流动): a single-page interactive that lets a user pick one
+of ~30 Chinese characters and drag a timeline slider through historical script
+eras (甲骨文 → 金文 → 篆书 → 隶书 → 楷书 → 简化字). The character's glyph
+rendering and its associated region both update together. One mechanic — pick
+a character, drag time, watch glyph + place move — not several unrelated
+modules. The stop-hunt / liquidity-sweep market simulator described in
+sections 1–6 is retired; those rules remain here as a record of process, not
+as active guidance for this topic.
+
+## Honesty constraints (load-bearing, do not relax)
+
+- Glyphs are a **stylized reconstruction**: the real Unicode character run
+  through a seeded, era-scaled stroke-jitter effect (rough multi-pass strokes
+  for the oldest eras, tapering to one clean pass for the modern era) — not a
+  scan of an authentic oracle-bone/bronze artifact. Label this on the page,
+  the same way the old site labeled its market data as synthetic.
+- Each era has **one representative region** (e.g. 甲骨文 → 河南安阳/殷墟), a
+  real, defensible general fact about that script era — never a fabricated
+  per-character excavation findspot we have no data for.
+- The region display is a schematic dot-map, not a real geographic vector map.
+
+## Reused from the old codebase
+
+- `rng.ts` (`mulberry32`) — drives the deterministic glyph-jitter effect.
+- `theme.ts` (`rgba`/`themeAccent`) — color helpers.
+- `spec/invariants.test.ts` is untouched; `spec/assignment.test.ts` was
+  rewritten for this topic's own contract (character grid, glyph stage,
+  era slider, region map) since the old one asserted the stop-hunt structure.

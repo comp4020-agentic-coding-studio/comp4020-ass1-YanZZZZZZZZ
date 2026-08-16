@@ -1,202 +1,25 @@
 <!doctype html>
-<html lang="en">
+<html lang="zh">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>The Stop Hunt — why your stop-loss is a target, not a safety net</title>
+    <title>汉字流动 — 一个汉字，就是一条文明河流</title>
     <link rel="stylesheet" href="./styles.css" />
   </head>
   <body>
     <header class="topbar">
-      <nav aria-label="Acts">
-        <a href="#act-1">Act 1</a>
-        <a href="#act-2">Act 2</a>
-        <a href="#act-3">Act 3</a>
-        <a href="#act-4">Act 4</a>
+      <h1>汉字流动</h1>
+      <p class="thesis">一个汉字，就是一条文明河流。</p>
+      <nav aria-label="页内导航">
+        <a href="#char-picker">选字</a>
+        <a href="#about">关于</a>
       </nav>
     </header>
 
-    <nav class="slide-dots" aria-label="Slide navigation">
-      <button type="button" class="slide-dot" data-slide="hero" aria-label="Go to intro"></button>
-      <button type="button" class="slide-dot" data-slide="act-1" aria-label="Go to Act 1"></button>
-      <button type="button" class="slide-dot" data-slide="act-2" aria-label="Go to Act 2"></button>
-      <button type="button" class="slide-dot" data-slide="act-3" aria-label="Go to Act 3"></button>
-      <button type="button" class="slide-dot" data-slide="act-4" aria-label="Go to Act 4"></button>
-    </nav>
+    <main id="char-picker"></main>
 
-    <main>
-      <section id="hero" class="hero">
-        <h1>The Stop Hunt</h1>
-        <p class="hero-sub">
-          Your stop-loss doesn't protect you. It tells everyone else exactly
-          where to find you.
-        </p>
-        <p class="hero-hint">Scroll to play.</p>
-      </section>
-
-      <section id="act-1" class="act" data-act="1" aria-labelledby="act-1-heading">
-        <p class="act-kicker">01 — Individual</p>
-        <h2 id="act-1-heading">Act 1 — Place your trade</h2>
-        <p class="act-intro">
-          Watch the price climb, then decide where to protect yourself.
-        </p>
-        <p class="act-tally" id="act1-tally" aria-live="polite">Attempt 1</p>
-        <div class="chart-wrap">
-          <canvas
-            id="act-1-canvas"
-            class="chart-canvas"
-            role="img"
-            aria-label="Act 1 candlestick chart: loading"
-          ></canvas>
-          <p class="chart-fallback" id="act-1-fallback" hidden>
-            Canvas is unavailable — the interactive chart cannot render here.
-          </p>
-        </div>
-        <p class="hint" id="act1-cluster-hint" aria-live="polite" hidden></p>
-        <div class="controls" id="act-1-controls">
-          <div class="chip-row" id="act1-presets" role="group" aria-label="Quick stop presets">
-            <button type="button" class="chip" data-preset="tight">Tight</button>
-            <button type="button" class="chip" data-preset="swing">At the swing low</button>
-            <button type="button" class="chip" data-preset="wide">Wide</button>
-          </div>
-          <label class="control-row">
-            <span>How exposed are you</span>
-            <input
-              type="range"
-              id="act1-size"
-              min="1"
-              max="10"
-              value="3"
-              step="1"
-              aria-label="Position size multiplier"
-            />
-            <span id="act1-size-value" class="control-value">3x</span>
-          </label>
-          <p class="hint" id="act1-hint" aria-live="polite">Watching price climb…</p>
-          <button type="button" id="act1-confirm" disabled>Confirm stop &amp; watch</button>
-        </div>
-        <div class="result-panel" id="act1-result" hidden></div>
-      </section>
-
-      <section id="act-2" class="act" data-act="2" aria-labelledby="act-2-heading">
-        <p class="act-kicker">02 — Statistical</p>
-        <h2 id="act-2-heading">Act 2 — It wasn't just you</h2>
-        <p class="act-intro">
-          Run the same setup a thousand times, then try hunting the stops
-          yourself.
-        </p>
-        <div class="chart-wrap">
-          <canvas
-            id="act-2-canvas"
-            class="chart-canvas"
-            role="img"
-            aria-label="Act 2 hunt simulator: loading"
-          ></canvas>
-          <p class="chart-fallback" id="act-2-fallback" hidden>
-            Canvas is unavailable — the interactive simulator cannot render
-            here.
-          </p>
-          <div class="pulse-hint" id="act2-pulse-hint" aria-hidden="true"></div>
-        </div>
-        <p class="hint" id="act2-guess-hint" aria-live="polite">
-          Tap inside the chart where you think most stops sit.
-        </p>
-        <div class="controls" id="act-2-controls" hidden>
-          <label class="control-row">
-            <span>Stop density</span>
-            <input
-              type="range"
-              id="act2-density"
-              min="0"
-              max="10"
-              value="5"
-              step="1"
-              aria-label="Stop density: how tightly retail stops cluster"
-            />
-            <span id="act2-density-value" class="control-value">5</span>
-          </label>
-          <p class="hint">Drag inside the chart to choose how far you push price down.</p>
-        </div>
-        <p class="hint" id="act2-readout" aria-live="polite" hidden>
-          <strong id="act2-count">0</strong> of <span id="act2-total"></span> stops triggered
-          (<span id="act2-pct"></span>) — <span id="act2-efficiency"></span> stops hunted per % moved.
-          <span class="verdict-badge" id="act2-badge"></span>
-        </p>
-      </section>
-
-      <section id="act-3" class="act" data-act="3" aria-labelledby="act-3-heading">
-        <p class="act-kicker">03 — Systemic</p>
-        <h2 id="act-3-heading">Act 3 — The whole system</h2>
-        <p class="act-intro">
-          Zoom out: where does everyone's money actually go?
-        </p>
-        <div class="chart-wrap">
-          <canvas
-            id="act-3-canvas"
-            class="chart-canvas"
-            role="img"
-            aria-label="Act 3 wealth-flow visualization: loading"
-          ></canvas>
-          <p class="chart-fallback" id="act-3-fallback" hidden>
-            Canvas is unavailable — the flow visualization cannot render here.
-          </p>
-        </div>
-        <div class="controls" id="act-3-controls">
-          <div class="chip-row" id="act3-scenarios" role="group" aria-label="Quick market scenarios">
-            <button type="button" class="chip" data-scenario="calm">Calm market</button>
-            <button type="button" class="chip" data-scenario="crowded">Crowded trade</button>
-            <button type="button" class="chip" data-scenario="panic">Panic day</button>
-          </div>
-          <button type="button" id="act3-runday" class="btn-primary">Run the day →</button>
-          <label class="control-row">
-            <span>Hunt depth</span>
-            <input
-              type="range"
-              id="act3-depth"
-              min="0"
-              max="20"
-              value="6"
-              step="0.5"
-              aria-label="Hunt depth percent"
-            />
-            <span id="act3-depth-value" class="control-value">6.0%</span>
-          </label>
-          <button type="button" id="act3-whatif">What if stops were spread out?</button>
-        </div>
-        <p class="hint" id="act3-readout" aria-live="polite"></p>
-        <p class="result-point" id="act3-callout" hidden></p>
-        <p class="hint" id="act3-explore-hint" hidden>
-          Now explore freely — try a different depth or toggle the clustering.
-        </p>
-      </section>
-
-      <section id="act-4" class="act" data-act="4" aria-labelledby="act-4-heading">
-        <p class="act-kicker">Bonus</p>
-        <h2 id="act-4-heading">Act 4 — Matryoshka</h2>
-        <p class="act-intro">Open the doll. There's always a smaller one inside.</p>
-        <p class="act-tally" id="act4-tally" aria-live="polite">Doll 1 of 5</p>
-        <div class="chart-wrap">
-          <canvas
-            id="act-4-canvas"
-            class="chart-canvas"
-            role="img"
-            aria-label="Matryoshka nesting doll: loading"
-          ></canvas>
-          <p class="chart-fallback" id="act-4-fallback" hidden>
-            Canvas is unavailable — the nesting-doll animation cannot render here.
-          </p>
-        </div>
-        <div class="controls" id="act-4-controls">
-          <button type="button" id="act4-open" class="btn-primary">Open the doll →</button>
-        </div>
-      </section>
-    </main>
-
-    <footer class="footnote">
-      <p>
-        Every chart on this page is a synthetic simulation built to teach one
-        idea. No real market data, no real trades, no financial advice.
-      </p>
+    <footer class="footnote" id="about">
+      <p>Placeholder — rebuilding for the Hanzi Flow topic.</p>
     </footer>
     <script type="module" src="./main.ts"></script>
   </body>
