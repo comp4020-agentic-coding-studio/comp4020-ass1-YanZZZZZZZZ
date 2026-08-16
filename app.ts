@@ -61,9 +61,10 @@ function renderPicker(
       const btn = document.createElement("button");
       btn.type = "button";
       btn.className = "chip char-chip";
+      btn.lang = "zh";
       btn.textContent = entry.char;
       btn.dataset.char = entry.char;
-      btn.setAttribute("aria-label", `${entry.char}（${entry.pinyin}）`);
+      btn.setAttribute("aria-label", `${entry.char} (${entry.pinyin})`);
       btn.addEventListener("click", () => onSelect(entry));
       btn.addEventListener("focus", () => onPreview(entry));
       btn.addEventListener("blur", onPreviewEnd);
@@ -111,9 +112,9 @@ export function initApp(): void {
     const era = data.eras[Number(slider.value)] ?? data.eras[0];
     if (eraValue) eraValue.textContent = era.label;
     if (eraCaption) {
-      eraCaption.textContent = `${era.period} · 载体：${era.carrier} · 代表地区：${era.region}`;
+      eraCaption.textContent = `${era.period} · Carrier: ${era.carrier} · Region: ${era.region}`;
     }
-    caption.textContent = `${entry.char}（${entry.pinyin}）— ${entry.note}`;
+    caption.textContent = `${entry.char} (${entry.pinyin}) — ${entry.note}`;
 
     if (glyphCtx) {
       const box = syncCanvasSize(glyphCtx);
@@ -159,8 +160,8 @@ export function initApp(): void {
       if (initial) selectChar(initial);
     })
     .catch(() => {
-      caption.textContent = "汉字数据加载失败，请刷新页面重试。";
-      picker.textContent = "无法加载汉字列表。";
+      caption.textContent = "Failed to load character data. Please refresh the page and try again.";
+      picker.textContent = "Unable to load the character list.";
       slider.disabled = true;
     });
 }

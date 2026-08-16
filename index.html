@@ -1,44 +1,44 @@
 <!doctype html>
-<html lang="zh">
+<html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>汉字流动 — 一个汉字，就是一条文明河流</title>
+    <title>Hanzi Flow — One Character, One River of Civilization</title>
     <link rel="stylesheet" href="./styles.css" />
   </head>
   <body>
     <header class="topbar">
-      <h1>汉字流动</h1>
-      <p class="thesis">一个汉字，就是一条文明河流。</p>
-      <nav aria-label="页内导航">
-        <a href="#char-picker">选字</a>
-        <a href="#about">关于</a>
+      <h1>Hanzi Flow <span class="hanzi-title" lang="zh">汉字流动</span></h1>
+      <p class="thesis">One character is a river flowing through civilization.</p>
+      <nav aria-label="Page navigation">
+        <a href="#char-picker">Characters</a>
+        <a href="#about">About</a>
       </nav>
     </header>
 
     <main>
-      <section class="interactive-pane" aria-label="选字与字形">
-        <div id="char-picker" role="group" aria-label="选择一个汉字"></div>
+      <section class="interactive-pane" aria-label="Character picker and glyph stage">
+        <div id="char-picker" role="group" aria-label="Choose a character"></div>
 
         <div class="glyph-stage">
-          <p class="hint" id="glyph-caption" aria-live="polite">正在加载汉字数据…</p>
+          <p class="hint" id="glyph-caption" aria-live="polite">Loading character data…</p>
           <div class="chart-wrap">
             <canvas
               id="glyph-canvas"
               class="chart-canvas glyph-canvas"
               role="img"
-              aria-label="字形演变：加载中"
+              aria-label="Glyph evolution: loading"
             ></canvas>
             <p class="chart-fallback" id="glyph-fallback" hidden>
-              画布不可用 — 字形无法在此渲染。
+              Canvas unavailable — the glyph can't render here.
             </p>
           </div>
         </div>
       </section>
 
-      <section class="controls" id="era-controls" aria-label="时间滑块">
+      <section class="controls" id="era-controls" aria-label="Timeline">
         <label class="control-row">
-          <span>历史时期</span>
+          <span>Era</span>
           <input
             type="range"
             id="era-slider"
@@ -46,7 +46,7 @@
             max="0"
             value="0"
             step="1"
-            aria-label="拖动以选择历史时期"
+            aria-label="Drag to choose a historical era"
             disabled
           />
           <span id="era-value" class="control-value"></span>
@@ -54,24 +54,25 @@
         <p class="hint" id="era-caption" aria-live="polite"></p>
       </section>
 
-      <section class="chart-wrap map-wrap" aria-label="出土/通行地区示意图">
+      <section class="chart-wrap map-wrap" aria-label="Schematic map of associated regions">
         <canvas
           id="region-canvas"
           class="chart-canvas map-canvas"
           role="img"
-          aria-label="地区示意图：加载中"
+          aria-label="Region map: loading"
         ></canvas>
         <p class="chart-fallback" id="region-fallback" hidden>
-          画布不可用 — 地区示意图无法在此渲染。
+          Canvas unavailable — the region map can't render here.
         </p>
       </section>
     </main>
 
     <footer class="footnote" id="about">
       <p>
-        本页所有字形均为程序生成的风格化示意（依据真实汉字字形叠加随机笔画抖动），
-        并非文字学考据或出土文物扫描；每个时期展示的地区为该字体通行/出土的代表性区域，
-        并非某个字的具体出土地点。
+        Every glyph on this page is a programmatically generated stylized impression — the real
+        Unicode character redrawn with seeded stroke jitter — not a paleographic reconstruction
+        or a scan of an excavated artifact. Each era's region is one representative place
+        associated with that script, not a specific excavation site for any single character.
       </p>
     </footer>
     <script type="module" src="./main.ts"></script>

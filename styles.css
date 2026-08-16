@@ -39,6 +39,12 @@ a {
   font-size: clamp(2rem, 6vw, 3rem);
 }
 
+.hanzi-title {
+  font-weight: 400;
+  color: var(--muted);
+  font-size: 0.55em;
+}
+
 .thesis {
   margin: 0 0 1rem;
   color: var(--muted);
