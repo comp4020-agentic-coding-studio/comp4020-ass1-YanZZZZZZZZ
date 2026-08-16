@@ -66,8 +66,9 @@ a {
 }
 
 .site-title-en {
+  font-family: Cinzel, "Playfair Display", serif;
   font-size: clamp(0.85rem, 2.5vw, 1.1rem);
-  font-weight: 500;
+  font-weight: 600;
   letter-spacing: 0.35em;
   text-transform: uppercase;
   color: var(--muted);
