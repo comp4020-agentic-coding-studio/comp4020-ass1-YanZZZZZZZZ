@@ -1,4 +1,4 @@
-const SLIDE_IDS = ["hero", "act-1", "act-2", "act-3"] as const;
+const SLIDE_IDS = ["hero", "act-1", "act-2", "act-3", "act-4"] as const;
 
 export function initSlides(): void {
   const main = document.querySelector("main");

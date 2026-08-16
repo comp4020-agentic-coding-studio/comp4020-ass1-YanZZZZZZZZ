@@ -160,6 +160,11 @@ a {
   --accent-rgb: 167 139 250;
 }
 
+.act[data-act="4"] {
+  --accent: #e0575b;
+  --accent-rgb: 224 87 91;
+}
+
 .act-kicker {
   text-transform: uppercase;
   letter-spacing: 0.12em;

@@ -12,6 +12,7 @@
         <a href="#act-1">Act 1</a>
         <a href="#act-2">Act 2</a>
         <a href="#act-3">Act 3</a>
+        <a href="#act-4">Act 4</a>
       </nav>
     </header>
 
@@ -20,6 +21,7 @@
       <button type="button" class="slide-dot" data-slide="act-1" aria-label="Go to Act 1"></button>
       <button type="button" class="slide-dot" data-slide="act-2" aria-label="Go to Act 2"></button>
       <button type="button" class="slide-dot" data-slide="act-3" aria-label="Go to Act 3"></button>
+      <button type="button" class="slide-dot" data-slide="act-4" aria-label="Go to Act 4"></button>
     </nav>
 
     <main>
@@ -166,6 +168,27 @@
         <p class="hint" id="act3-explore-hint" hidden>
           Now explore freely — try a different depth or toggle the clustering.
         </p>
+      </section>
+
+      <section id="act-4" class="act" data-act="4" aria-labelledby="act-4-heading">
+        <p class="act-kicker">Bonus</p>
+        <h2 id="act-4-heading">Act 4 — Matryoshka</h2>
+        <p class="act-intro">Open the doll. There's always a smaller one inside.</p>
+        <p class="act-tally" id="act4-tally" aria-live="polite">Doll 1 of 5</p>
+        <div class="chart-wrap">
+          <canvas
+            id="act-4-canvas"
+            class="chart-canvas"
+            role="img"
+            aria-label="Matryoshka nesting doll: loading"
+          ></canvas>
+          <p class="chart-fallback" id="act-4-fallback" hidden>
+            Canvas is unavailable — the nesting-doll animation cannot render here.
+          </p>
+        </div>
+        <div class="controls" id="act-4-controls">
+          <button type="button" id="act4-open" class="btn-primary">Open the doll →</button>
+        </div>
       </section>
     </main>
 
