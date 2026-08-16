@@ -3,6 +3,7 @@ const LEVELS = PALETTE.length;
 const ZOOM_MS = 450;
 const SHRUNK_SCALE = 0.12;
 const GROWN_SCALE = 2.4;
+const LEVEL_SHRINK = 0.72; // each nested doll is ~72% the height of its parent
 
 function shade(hex: string, amount: number): string {
   const n = Number.parseInt(hex.slice(1), 16);
@@ -111,10 +112,14 @@ export function initAct4(): void {
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
   };
 
+  const outerHeight = (height: number) => height * 0.92;
+  const dollHeight = (outerH: number, lvl: number) => outerH * LEVEL_SHRINK ** lvl;
+
   const drawStatic = () => {
     const { width, height } = size();
     ctx.clearRect(0, 0, width, height);
-    drawDoll(ctx, width / 2, height / 2, height * 0.78, 1, PALETTE[level] ?? PALETTE[0], 1);
+    const h = dollHeight(outerHeight(height), level);
+    drawDoll(ctx, width / 2, height / 2, h, 1, PALETTE[level] ?? PALETTE[0], 1);
   };
 
   const updateUI = () => {
@@ -124,7 +129,9 @@ export function initAct4(): void {
 
   const runZoom = (fromLevel: number, toLevel: number, opening: boolean) => {
     const { width, height } = size();
-    const baseH = height * 0.78;
+    const outerH = outerHeight(height);
+    const fromH = dollHeight(outerH, fromLevel);
+    const toH = dollHeight(outerH, toLevel);
     const start = performance.now();
 
     const step = (now: number) => {
@@ -135,8 +142,8 @@ export function initAct4(): void {
       const outScale = opening ? 1 + (GROWN_SCALE - 1) * eased : 1 - (1 - SHRUNK_SCALE) * eased;
       const inScale = opening ? SHRUNK_SCALE + (1 - SHRUNK_SCALE) * eased : GROWN_SCALE - (GROWN_SCALE - 1) * eased;
 
-      drawDoll(ctx, width / 2, height / 2, baseH, outScale, PALETTE[fromLevel] ?? PALETTE[0], 1 - eased);
-      drawDoll(ctx, width / 2, height / 2, baseH, inScale, PALETTE[toLevel] ?? PALETTE[0], eased);
+      drawDoll(ctx, width / 2, height / 2, fromH, outScale, PALETTE[fromLevel] ?? PALETTE[0], 1 - eased);
+      drawDoll(ctx, width / 2, height / 2, toH, inScale, PALETTE[toLevel] ?? PALETTE[0], eased);
 
       if (t < 1) {
         rafId = requestAnimationFrame(step);

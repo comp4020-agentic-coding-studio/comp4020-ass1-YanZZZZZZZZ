@@ -208,6 +208,10 @@ a {
   touch-action: none;
 }
 
+#act-4-canvas {
+  height: 420px;
+}
+
 .chart-fallback {
   padding: 1rem;
   color: var(--muted);
