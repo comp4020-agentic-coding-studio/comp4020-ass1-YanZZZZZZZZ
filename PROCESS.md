@@ -26,7 +26,13 @@ compelling to build further.
    reconstructions, regions are one representative place per era, not
    per-character findspots) were written into `CLAUDE.md` itself so every
    later feature had to satisfy them by construction, rather than being
-   checked after the fact.
+   checked after the fact. I knew the rule had actually taken, not just been
+   noted once, because the two features built afterwards satisfied it without
+   being told again --- the pictograph renderer's footer copy calls the
+   glyphs a "stylized impression" and the region map only ever surfaces the
+   short representative-region label, never a fabricated per-character
+   findspot --- and `spec/assignment.test.ts`'s assertion on `/stylized/i`
+   stayed green through every later rewrite of that footer.
    ([`0740205`](https://github.com/comp4020-agentic-coding-studio/comp4020-ass1-YanZZZZZZZZ/commit/0740205))
 
 2. **Font-jitter glyphs weren't the old scripts, just blurry modern ones.**
@@ -56,7 +62,11 @@ compelling to build further.
    rough-to-clean arc the glyph timeline itself depicts. This surfaced one
    real correction: `stylelint`'s `font-family-name-quotes` rule failed on
    `"Cinzel"` because single-word font names must be unquoted while
-   multi-word ones stay quoted --- caught by `pnpm check`, not by eye.
+   multi-word ones stay quoted --- caught by `pnpm check`, not by eye. Before
+   accepting the redesign I also screenshotted the live dev server at both
+   1920×1080 and 390×844 to confirm the header actually rendered the pairing
+   as intended at each size, rather than trusting the CSS `clamp()` values by
+   reading them.
    ([`9d320e3...dab72d2`](https://github.com/comp4020-agentic-coding-studio/comp4020-ass1-YanZZZZZZZZ/compare/9d320e3...dab72d2))
 
 4. **A reported bug traced to a canvas API footgun, not a layout tweak.** The
