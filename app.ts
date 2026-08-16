@@ -1,4 +1,5 @@
 import { loadCharacterData, type CharacterData, type CharacterEntry } from "./characters";
+import { drawGlyphImpression } from "./glyph-render";
 
 function ensureCanvas(canvasId: string, fallbackId: string): CanvasRenderingContext2D | null {
   const canvas = document.getElementById(canvasId) as HTMLCanvasElement | null;
@@ -12,6 +13,17 @@ function ensureCanvas(canvasId: string, fallbackId: string): CanvasRenderingCont
     return null;
   }
   return ctx;
+}
+
+function syncCanvasSize(ctx: CanvasRenderingContext2D): { width: number; height: number } {
+  const canvas = ctx.canvas;
+  const dpr = window.devicePixelRatio || 1;
+  const width = canvas.clientWidth;
+  const height = canvas.clientHeight;
+  canvas.width = Math.round(width * dpr);
+  canvas.height = Math.round(height * dpr);
+  ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  return { width, height };
 }
 
 function groupByCategory(characters: CharacterEntry[]): Map<string, CharacterEntry[]> {
@@ -57,7 +69,7 @@ function renderPicker(
 }
 
 export function initApp(): void {
-  ensureCanvas("glyph-canvas", "glyph-fallback");
+  const glyphCtx = ensureCanvas("glyph-canvas", "glyph-fallback");
   ensureCanvas("region-canvas", "region-fallback");
 
   const picker = document.getElementById("char-picker");
@@ -86,6 +98,11 @@ export function initApp(): void {
     }
     caption.textContent = `${selected.char}（${selected.pinyin}）— ${selected.note}`;
     setActiveChip(selected.char);
+
+    if (glyphCtx) {
+      const box = syncCanvasSize(glyphCtx);
+      drawGlyphImpression(glyphCtx, box, selected.char, era);
+    }
   };
 
   const selectChar = (entry: CharacterEntry) => {
