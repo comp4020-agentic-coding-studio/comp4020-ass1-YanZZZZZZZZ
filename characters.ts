@@ -4,6 +4,7 @@ export interface Era {
   period: string;
   carrier: string;
   region: string;
+  regionShort: string;
   roughness: number;
 }
 

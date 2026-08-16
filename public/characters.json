@@ -6,6 +6,7 @@
       "period": "c. 14th–11th century BCE",
       "carrier": "Tortoise shell / ox bone",
       "region": "Anyang, Henan (Yinxu)",
+      "regionShort": "Anyang, Henan",
       "roughness": 1
     },
     {
@@ -14,6 +15,7 @@
       "period": "c. 11th–8th century BCE",
       "carrier": "Bronze ritual vessels",
       "region": "Guanzhong, Shaanxi (Baoji / Xi'an area)",
+      "regionShort": "Guanzhong, Shaanxi",
       "roughness": 0.72
     },
     {
@@ -22,6 +24,7 @@
       "period": "3rd century BCE",
       "carrier": "Stone carvings / bamboo & silk",
       "region": "Xianyang, Shaanxi",
+      "regionShort": "Xianyang, Shaanxi",
       "roughness": 0.48
     },
     {
@@ -30,6 +33,7 @@
       "period": "2nd century BCE – 2nd century CE",
       "carrier": "Bamboo slips / stone steles",
       "region": "Shaanxi & Gansu (major bamboo-slip find sites)",
+      "regionShort": "Shaanxi & Gansu",
       "roughness": 0.28
     },
     {
@@ -38,6 +42,7 @@
       "period": "3rd–6th century CE",
       "carrier": "Paper / stone steles",
       "region": "Central Plains & Jiangnan region",
+      "regionShort": "Central Plains",
       "roughness": 0.1
     },
     {
@@ -46,6 +51,7 @@
       "period": "1956–present",
       "carrier": "Print / digital text",
       "region": "Mainland China",
+      "regionShort": "Mainland China",
       "roughness": 0
     }
   ],
