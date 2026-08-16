@@ -13,6 +13,17 @@ import {
 
 const PARTICLE_COUNT = 240;
 
+interface Scenario {
+  density: number;
+  depth: number;
+}
+
+const SCENARIOS: Record<string, Scenario> = {
+  calm: { density: 2, depth: 3 },
+  crowded: { density: 6, depth: 6 },
+  panic: { density: 9, depth: 12 },
+};
+
 function uniformDistances(count: number, rng: () => number): number[] {
   return Array.from({ length: count }, () => rng() * HUNT_SIM_MAX_DISTANCE);
 }
@@ -27,6 +38,7 @@ export function initAct3(): void {
   const readout = document.getElementById("act3-readout");
   const callout = document.getElementById("act3-callout");
   const exploreHint = document.getElementById("act3-explore-hint");
+  const scenarioButtons = document.querySelectorAll<HTMLButtonElement>("#act3-scenarios .chip");
 
   if (!canvas || !runBtn || !depthInput || !depthValue || !whatIfBtn || !readout || !callout || !exploreHint) {
     return;
@@ -49,6 +61,7 @@ export function initAct3(): void {
   let spreadOut = false;
   let hasRun = false;
   let rafId: number | null = null;
+  let density = 6;
 
   const size = () => ({
     width: canvas.width / dpr,
@@ -66,7 +79,7 @@ export function initAct3(): void {
   };
 
   const distances = () =>
-    spreadOut ? uniformDistances(PARTICLE_COUNT, rng) : runBatch(6, 99).distances.slice(0, PARTICLE_COUNT);
+    spreadOut ? uniformDistances(PARTICLE_COUNT, rng) : runBatch(density, 99).distances.slice(0, PARTICLE_COUNT);
 
   const buildParticles = () => {
     particles = createParticles(distances(), layout.source, rng);
@@ -169,6 +182,26 @@ export function initAct3(): void {
     buildParticles();
     if (hasRun) applyDepth(Number(depthInput.value));
     else draw();
+  });
+
+  scenarioButtons.forEach((btn) => {
+    btn.addEventListener("click", () => {
+      const scenario = SCENARIOS[btn.dataset.scenario ?? ""];
+      if (!scenario) return;
+      scenarioButtons.forEach((b) => b.removeAttribute("aria-current"));
+      btn.setAttribute("aria-current", "true");
+
+      density = scenario.density;
+      depthInput.value = String(scenario.depth);
+      depthValue.textContent = `${scenario.depth.toFixed(1)}%`;
+      spreadOut = false;
+      whatIfBtn.textContent = "What if stops were spread out?";
+      hasRun = true;
+      buildParticles();
+      applyDepth(scenario.depth);
+      exploreHint.hidden = false;
+      runBtn.textContent = "Run again →";
+    });
   });
 
   window.addEventListener("resize", () => {
