@@ -57,11 +57,12 @@ a {
 }
 
 .site-title-cn {
-  font-size: clamp(2.6rem, 9vw, 3.8rem);
-  font-weight: 600;
-  letter-spacing: 0.06em;
+  font-family: "Ma Shan Zheng", "Noto Serif SC", serif;
+  font-size: clamp(3rem, 10vw, 4.4rem);
+  font-weight: 400;
+  letter-spacing: 0.08em;
   color: var(--text);
-  line-height: 1.1;
+  line-height: 1.15;
 }
 
 .site-title-en {
