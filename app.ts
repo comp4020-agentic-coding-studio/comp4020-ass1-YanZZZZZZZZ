@@ -1,5 +1,6 @@
 import { loadCharacterData, type CharacterData, type CharacterEntry } from "./characters";
 import { drawGlyphImpression } from "./glyph-render";
+import { drawRegionMap } from "./region-map";
 
 function ensureCanvas(canvasId: string, fallbackId: string): CanvasRenderingContext2D | null {
   const canvas = document.getElementById(canvasId) as HTMLCanvasElement | null;
@@ -70,7 +71,7 @@ function renderPicker(
 
 export function initApp(): void {
   const glyphCtx = ensureCanvas("glyph-canvas", "glyph-fallback");
-  ensureCanvas("region-canvas", "region-fallback");
+  const regionCtx = ensureCanvas("region-canvas", "region-fallback");
 
   const picker = document.getElementById("char-picker");
   const caption = document.getElementById("glyph-caption");
@@ -102,6 +103,11 @@ export function initApp(): void {
     if (glyphCtx) {
       const box = syncCanvasSize(glyphCtx);
       drawGlyphImpression(glyphCtx, box, selected.char, era);
+    }
+
+    if (regionCtx) {
+      const box = syncCanvasSize(regionCtx);
+      drawRegionMap(regionCtx, box, data.eras, era.key);
     }
   };
 
