@@ -96,7 +96,10 @@
           </p>
           <div class="pulse-hint" id="act2-pulse-hint" aria-hidden="true"></div>
         </div>
-        <div class="controls" id="act-2-controls">
+        <p class="hint" id="act2-guess-hint" aria-live="polite">
+          Tap inside the chart where you think most stops sit.
+        </p>
+        <div class="controls" id="act-2-controls" hidden>
           <label class="control-row">
             <span>Stop density</span>
             <input
@@ -112,7 +115,7 @@
           </label>
           <p class="hint">Drag inside the chart to choose how far you push price down.</p>
         </div>
-        <p class="hint" id="act2-readout" aria-live="polite">
+        <p class="hint" id="act2-readout" aria-live="polite" hidden>
           <strong id="act2-count">0</strong> of <span id="act2-total"></span> stops triggered
           (<span id="act2-pct"></span>) — <span id="act2-efficiency"></span> stops hunted per % moved.
           <span class="verdict-badge" id="act2-badge"></span>

@@ -11,8 +11,23 @@ export function initAct2(): void {
   const pctEl = document.getElementById("act2-pct");
   const efficiencyEl = document.getElementById("act2-efficiency");
   const badgeEl = document.getElementById("act2-badge");
+  const guessHint = document.getElementById("act2-guess-hint");
+  const controlsPanel = document.getElementById("act-2-controls");
+  const readoutPanel = document.getElementById("act2-readout");
 
-  if (!canvas || !densityInput || !densityValue || !countEl || !totalEl || !pctEl || !efficiencyEl || !badgeEl) {
+  if (
+    !canvas ||
+    !densityInput ||
+    !densityValue ||
+    !countEl ||
+    !totalEl ||
+    !pctEl ||
+    !efficiencyEl ||
+    !badgeEl ||
+    !guessHint ||
+    !controlsPanel ||
+    !readoutPanel
+  ) {
     return;
   }
 
@@ -30,6 +45,8 @@ export function initAct2(): void {
   let batch: HuntBatch = runBatch(Number(densityInput.value));
   let depth = 3;
   let dragging = false;
+  let guessed = false;
+  let guessDistance = 0;
   const flashes = new Map<number, number>(); // bin index -> flash start time
   let flashRaf: number | null = null;
 
@@ -72,9 +89,42 @@ export function initAct2(): void {
     }
   };
 
+  const peakDistance = (): number => {
+    const bins = buildHistogram(batch);
+    const peak = bins.reduce((best, b) => (b.count > best.count ? b : best), bins[0]);
+    return (peak.from + peak.to) / 2;
+  };
+
+  const drawGuessMarker = () => {
+    const { height } = size();
+    const x = xForDistance(guessDistance);
+    ctx.save();
+    ctx.fillStyle = "#e6e8ee";
+    ctx.beginPath();
+    ctx.moveTo(x - 6, 0);
+    ctx.lineTo(x + 6, 0);
+    ctx.lineTo(x, 10);
+    ctx.closePath();
+    ctx.fill();
+    ctx.font = "11px system-ui, sans-serif";
+    ctx.textAlign = "center";
+    ctx.fillText("your guess", x, height - 4);
+    ctx.restore();
+  };
+
   const draw = () => {
     const { width, height } = size();
     ctx.clearRect(0, 0, width, height);
+
+    if (!guessed) {
+      ctx.strokeStyle = "#232838";
+      ctx.lineWidth = 1;
+      ctx.beginPath();
+      ctx.moveTo(0, height - 1);
+      ctx.lineTo(width, height - 1);
+      ctx.stroke();
+      return;
+    }
 
     const bins = buildHistogram(batch);
     const maxCount = Math.max(1, ...bins.map((b) => b.count));
@@ -111,6 +161,8 @@ export function initAct2(): void {
     ctx.lineTo(depthX, height);
     ctx.stroke();
     ctx.shadowBlur = 0;
+
+    drawGuessMarker();
   };
 
   const runFlashLoop = () => {
@@ -147,7 +199,26 @@ export function initAct2(): void {
     draw();
   };
 
+  const reveal = (clientX: number) => {
+    const rect = canvas.getBoundingClientRect();
+    guessDistance = distanceForX(clientX - rect.left);
+    guessed = true;
+    depth = guessDistance;
+    controlsPanel.hidden = false;
+    readoutPanel.hidden = false;
+    const peak = peakDistance();
+    const diff = Math.abs(guessDistance - peak);
+    const verdict = diff <= 0.5 ? "Sharp guess — that's almost exactly it." : "See the gap — most stops weren't where you guessed.";
+    guessHint.textContent = `You guessed ${guessDistance.toFixed(1)}% — the real cluster peaks around ${peak.toFixed(1)}%. ${verdict}`;
+    updateReadout();
+    draw();
+  };
+
   canvas.addEventListener("pointerdown", (event) => {
+    if (!guessed) {
+      reveal(event.clientX);
+      return;
+    }
     dragging = true;
     canvas.setPointerCapture(event.pointerId);
     setDepthFromClientX(event.clientX);
