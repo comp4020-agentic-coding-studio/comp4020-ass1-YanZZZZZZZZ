@@ -1,6 +1,6 @@
 import { mulberry32 } from "./rng";
 import { runBatch, HUNT_SIM_MAX_DISTANCE } from "./hunt-sim";
-import { themeAccent } from "./theme";
+import { themeAccent, rgba } from "./theme";
 import {
   computeLayout,
   createParticles,
@@ -72,13 +72,17 @@ export function initAct3(): void {
     particles = createParticles(distances(), layout.source, rng);
   };
 
-  const drawPool = (pool: { x: number; y: number; radius: number; label: string }) => {
+  const drawPool = (pool: { x: number; y: number; radius: number; label: string }, intensity: number) => {
     if (!ctx) return;
+    ctx.save();
+    ctx.shadowColor = accent;
+    ctx.shadowBlur = 6 + intensity * 24;
     ctx.beginPath();
     ctx.arc(pool.x, pool.y, pool.radius, 0, Math.PI * 2);
-    ctx.strokeStyle = accent;
+    ctx.strokeStyle = rgba(accent, 0.4 + intensity * 0.6);
     ctx.lineWidth = 1.5;
     ctx.stroke();
+    ctx.restore();
     ctx.fillStyle = "#8b93a7";
     ctx.font = "12px system-ui, sans-serif";
     ctx.textAlign = "center";
@@ -89,9 +93,11 @@ export function initAct3(): void {
     const { width, height } = size();
     ctx.clearRect(0, 0, width, height);
 
-    drawPool(layout.source);
-    drawPool(layout.survived);
-    drawPool(layout.hunted);
+    const total = Math.max(1, particles.length);
+    const huntedFraction = hasRun ? particles.filter((p) => p.hunted).length / total : 0;
+    drawPool(layout.source, 0.15);
+    drawPool(layout.survived, hasRun ? 1 - huntedFraction : 0.15);
+    drawPool(layout.hunted, huntedFraction);
 
     for (const p of particles) {
       ctx.strokeStyle = p.hunted ? "rgb(248 81 73 / 40%)" : "rgb(63 185 80 / 40%)";

@@ -24,10 +24,14 @@ export function initAct2(): void {
   }
 
   const accent = themeAccent(canvas);
+  const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const FLASH_MS = 220;
   let dpr = 1;
   let batch: HuntBatch = runBatch(Number(densityInput.value));
   let depth = 3;
   let dragging = false;
+  const flashes = new Map<number, number>(); // bin index -> flash start time
+  let flashRaf: number | null = null;
 
   const resize = () => {
     const rect = canvas.getBoundingClientRect();
@@ -77,12 +81,24 @@ export function initAct2(): void {
     const barGap = 2;
     const barWidth = width / bins.length - barGap;
 
+    const now = performance.now();
     bins.forEach((bin, i) => {
       const x = (width / bins.length) * i;
       const barHeight = (bin.count / maxCount) * (height - 20);
       const triggered = bin.from < depth;
       ctx.fillStyle = triggered ? "#f85149" : "#3fb950";
       ctx.fillRect(x, height - barHeight, Math.max(1, barWidth), barHeight);
+
+      const flashStart = flashes.get(i);
+      if (flashStart !== undefined) {
+        const t = (now - flashStart) / FLASH_MS;
+        if (t >= 1) {
+          flashes.delete(i);
+        } else {
+          ctx.fillStyle = `rgb(255 255 255 / ${(1 - t) * 0.85})`;
+          ctx.fillRect(x, height - barHeight, Math.max(1, barWidth), barHeight);
+        }
+      }
     });
 
     const depthX = xForDistance(depth);
@@ -97,9 +113,36 @@ export function initAct2(): void {
     ctx.shadowBlur = 0;
   };
 
+  const runFlashLoop = () => {
+    if (flashRaf !== null) return;
+    const step = () => {
+      draw();
+      if (flashes.size > 0) {
+        flashRaf = requestAnimationFrame(step);
+      } else {
+        flashRaf = null;
+      }
+    };
+    step();
+  };
+
+  const triggerFlashes = (newDepth: number, oldDepth: number) => {
+    if (reduceMotion) return;
+    const bins = buildHistogram(batch);
+    const now = performance.now();
+    bins.forEach((bin, i) => {
+      const justCaptured = bin.from < newDepth && bin.from >= oldDepth;
+      const justReleased = bin.from < oldDepth && bin.from >= newDepth;
+      if (justCaptured || justReleased) flashes.set(i, now);
+    });
+    if (flashes.size > 0) runFlashLoop();
+  };
+
   const setDepthFromClientX = (clientX: number) => {
     const rect = canvas.getBoundingClientRect();
+    const previousDepth = depth;
     depth = distanceForX(clientX - rect.left);
+    triggerFlashes(depth, previousDepth);
     updateReadout();
     draw();
   };
@@ -122,6 +165,7 @@ export function initAct2(): void {
   densityInput.addEventListener("input", () => {
     densityValue.textContent = densityInput.value;
     batch = runBatch(Number(densityInput.value));
+    flashes.clear();
     updateReadout();
     draw();
   });
