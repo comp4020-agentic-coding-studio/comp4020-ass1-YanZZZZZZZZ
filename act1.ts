@@ -160,6 +160,7 @@ export function initAct1(): void {
         });
         hint.textContent = "Stopped out — watching what happens next…";
         renderer.draw();
+        if (!reduceMotion) renderer.pingLine(STOP_LINE_ID);
       }
 
       index += 1;

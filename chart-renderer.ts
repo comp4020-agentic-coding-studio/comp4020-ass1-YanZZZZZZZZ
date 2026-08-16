@@ -12,6 +12,12 @@ type DragListener = (price: number) => void;
 
 const PADDING_Y = 24;
 const PADDING_X = 8;
+const PING_DURATION_MS = 650;
+
+interface Ping {
+  lineId: string;
+  start: number;
+}
 
 export class ChartRenderer {
   private canvas: HTMLCanvasElement;
@@ -23,6 +29,8 @@ export class ChartRenderer {
   private dragListeners = new Map<string, DragListener>();
   private draggingId: string | null = null;
   private dpr = 1;
+  private ping: Ping | null = null;
+  private pingRaf: number | null = null;
 
   constructor(canvas: HTMLCanvasElement) {
     this.canvas = canvas;
@@ -55,6 +63,28 @@ export class ChartRenderer {
 
   onLineDrag(id: string, listener: DragListener): void {
     this.dragListeners.set(id, listener);
+  }
+
+  pingLine(lineId: string): void {
+    this.ping = { lineId, start: performance.now() };
+    this.runPingLoop();
+  }
+
+  private runPingLoop(): void {
+    if (this.pingRaf !== null) cancelAnimationFrame(this.pingRaf);
+    const step = () => {
+      if (!this.ping) return;
+      const elapsed = performance.now() - this.ping.start;
+      if (elapsed >= PING_DURATION_MS) {
+        this.ping = null;
+        this.pingRaf = null;
+        this.draw();
+        return;
+      }
+      this.draw();
+      this.pingRaf = requestAnimationFrame(step);
+    };
+    step();
   }
 
   resize(): void {
@@ -182,7 +212,7 @@ export class ChartRenderer {
       if (line.dashed) ctx.setLineDash([6, 4]);
       if (line.draggable) {
         ctx.shadowColor = line.color;
-        ctx.shadowBlur = 8;
+        ctx.shadowBlur = 16;
       }
       ctx.beginPath();
       ctx.moveTo(0, y);
@@ -194,6 +224,22 @@ export class ChartRenderer {
         ctx.fillStyle = line.color;
         ctx.font = "11px system-ui, sans-serif";
         ctx.fillText(line.label, this.width - 8 - ctx.measureText(line.label).width, y - 6);
+      }
+    }
+
+    if (this.ping) {
+      const line = this.lines.get(this.ping.lineId);
+      if (line) {
+        const t = Math.min(1, (performance.now() - this.ping.start) / PING_DURATION_MS);
+        const y = this.priceToY(line.price);
+        ctx.save();
+        ctx.globalAlpha = 1 - t;
+        ctx.strokeStyle = line.color;
+        ctx.lineWidth = 2;
+        ctx.beginPath();
+        ctx.arc(this.width / 2, y, 6 + t * 40, 0, Math.PI * 2);
+        ctx.stroke();
+        ctx.restore();
       }
     }
   }
