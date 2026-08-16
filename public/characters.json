@@ -1,0 +1,84 @@
+{
+  "eras": [
+    {
+      "key": "oracle",
+      "label": "商 · 甲骨文",
+      "period": "约公元前14—前11世纪",
+      "carrier": "龟甲 / 兽骨",
+      "region": "河南安阳（殷墟）",
+      "roughness": 1
+    },
+    {
+      "key": "bronze",
+      "label": "西周 · 金文",
+      "period": "约公元前11—前8世纪",
+      "carrier": "青铜礼器",
+      "region": "陕西关中（宝鸡、西安一带）",
+      "roughness": 0.72
+    },
+    {
+      "key": "seal",
+      "label": "秦 · 篆书",
+      "period": "公元前3世纪",
+      "carrier": "石刻 / 简帛",
+      "region": "陕西咸阳",
+      "roughness": 0.48
+    },
+    {
+      "key": "clerical",
+      "label": "汉 · 隶书",
+      "period": "公元前2世纪—2世纪",
+      "carrier": "简牍 / 碑刻",
+      "region": "陕西、甘肃（汉简出土集中地）",
+      "roughness": 0.28
+    },
+    {
+      "key": "kaishu",
+      "label": "魏晋 · 楷书",
+      "period": "3—6世纪",
+      "carrier": "纸本 / 碑刻",
+      "region": "中原及江南地区",
+      "roughness": 0.1
+    },
+    {
+      "key": "simplified",
+      "label": "现代 · 简化字",
+      "period": "1956年至今",
+      "carrier": "印刷 / 数字文本",
+      "region": "中国大陆通行",
+      "roughness": 0
+    }
+  ],
+  "characters": [
+    { "char": "水", "pinyin": "shuǐ", "category": "自然", "note": "象形字，甲骨文即像流水波纹，是演变链条最直观的字之一。" },
+    { "char": "山", "pinyin": "shān", "category": "自然", "note": "甲骨文像三峰并立，楷书之后三峰简化为对称的竖笔结构。" },
+    { "char": "日", "pinyin": "rì", "category": "自然", "note": "甲骨文为带中点的圆形，篆书之后圆形规整为方形。" },
+    { "char": "月", "pinyin": "yuè", "category": "自然", "note": "甲骨文像一弯新月，与「日」的方形化路径形成对比。" },
+    { "char": "雨", "pinyin": "yǔ", "category": "自然", "note": "甲骨文像天幕下垂落的雨滴，隶变后雨滴规整为四个点。" },
+    { "char": "云", "pinyin": "yún", "category": "自然", "note": "本象云气回旋之形，后加「雨」旁分化出「雲」，简化字又恢复本字。" },
+    { "char": "火", "pinyin": "huǒ", "category": "自然", "note": "甲骨文像跳动的火苗，笔画在隶变中被拉直、对称化。" },
+    { "char": "木", "pinyin": "mù", "category": "自然", "note": "象树形，上枝下根，结构在数千年里保持稳定。" },
+    { "char": "田", "pinyin": "tián", "category": "自然", "note": "像田埂纵横的田地，是早期文字规范化的典型例子。" },
+    { "char": "马", "pinyin": "mǎ", "category": "动物", "note": "甲骨文突出鬃毛与四足，1956年简化后四足省并为一笔，符号化程度很高。" },
+    { "char": "牛", "pinyin": "niú", "category": "动物", "note": "甲骨文取牛头正面的双角轮廓，后世保留双角简化其余部分。" },
+    { "char": "羊", "pinyin": "yáng", "category": "动物", "note": "同样取头部双角特征，与「牛」的演变路径可以对照。" },
+    { "char": "鱼", "pinyin": "yú", "category": "动物", "note": "甲骨文像鱼的全身轮廓，隶变后尾部简化为四点。" },
+    { "char": "龙", "pinyin": "lóng", "category": "动物", "note": "早期字形曲折多变，是象形走向高度抽象符号的代表。" },
+    { "char": "鸟", "pinyin": "niǎo", "category": "动物", "note": "与「隹」同源，字形经历了从写实到偏旁化的分合。" },
+    { "char": "人", "pinyin": "rén", "category": "人体", "note": "甲骨文像侧身而立的人形，是演变链条最简单直观的字。" },
+    { "char": "女", "pinyin": "nǚ", "category": "人体", "note": "甲骨文像跪坐、交手的人形姿态，姿态感在后世字形中逐渐弱化。" },
+    { "char": "子", "pinyin": "zǐ", "category": "人体", "note": "甲骨文像襁褓中的婴儿，大头与摆动的手臂尤为突出。" },
+    { "char": "目", "pinyin": "mù", "category": "人体", "note": "甲骨文为横放的眼睛轮廓，后世转为竖立的方框结构。" },
+    { "char": "心", "pinyin": "xīn", "category": "人体", "note": "甲骨文勾勒心脏外形，后来大量作为偏旁参与抽象义的构字。" },
+    { "char": "车", "pinyin": "chē", "category": "器物", "note": "甲骨文详细描绘车厢、车轮与车轴，是简化幅度最大的字之一。" },
+    { "char": "门", "pinyin": "mén", "category": "器物", "note": "象两扇门扉相对，繁体「門」到简化「门」是流动中断裂与延续并存的例子。" },
+    { "char": "刀", "pinyin": "dāo", "category": "器物", "note": "象弯刀侧面之形，早期字形已相当简练有力。" },
+    { "char": "工", "pinyin": "gōng", "category": "器物", "note": "取自工具的侧面轮廓，后逐渐抽象为两横一竖的符号。" },
+    { "char": "王", "pinyin": "wáng", "category": "器物", "note": "早期字形被认为像斧钺一类的权力象征物，三横一竖的结构后世固定下来。" },
+    { "char": "国", "pinyin": "guó", "category": "社会", "note": "从「或」（戈守疆域）到「國」再到简化「国」，字形演变与国家概念的叙事交织在一起。" },
+    { "char": "家", "pinyin": "jiā", "category": "社会", "note": "「宀」下有「豕」，屋檐下养猪的意象数千年基本未变。" },
+    { "char": "安", "pinyin": "ān", "category": "社会", "note": "甲骨文像女子安坐于屋檐之下，会意的温暖感一直保留到今天。" },
+    { "char": "明", "pinyin": "míng", "category": "抽象", "note": "由「日」「月」会意而成，结构历经数千年变化不大，意义却愈发抽象。" },
+    { "char": "信", "pinyin": "xìn", "category": "抽象", "note": "「人」「言」会意，从具体的「人守其言」演变为形声化的抽象价值观用字。" }
+  ]
+}

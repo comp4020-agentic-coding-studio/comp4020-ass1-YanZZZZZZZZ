@@ -18,7 +18,7 @@
 
     <main>
       <section class="interactive-pane" aria-label="选字与字形">
-        <div id="char-picker" class="chip-row" role="group" aria-label="选择一个汉字"></div>
+        <div id="char-picker" role="group" aria-label="选择一个汉字"></div>
 
         <div class="glyph-stage">
           <p class="hint" id="glyph-caption" aria-live="polite">正在加载汉字数据…</p>
@@ -47,6 +47,7 @@
             value="0"
             step="1"
             aria-label="拖动以选择历史时期"
+            disabled
           />
           <span id="era-value" class="control-value"></span>
         </label>
