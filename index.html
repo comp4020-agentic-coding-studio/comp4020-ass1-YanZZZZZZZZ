@@ -50,7 +50,13 @@
             Canvas is unavailable — the interactive chart cannot render here.
           </p>
         </div>
+        <p class="hint" id="act1-cluster-hint" aria-live="polite" hidden></p>
         <div class="controls" id="act-1-controls">
+          <div class="chip-row" id="act1-presets" role="group" aria-label="Quick stop presets">
+            <button type="button" class="chip" data-preset="tight">Tight</button>
+            <button type="button" class="chip" data-preset="swing">At the swing low</button>
+            <button type="button" class="chip" data-preset="wide">Wide</button>
+          </div>
           <label class="control-row">
             <span>How exposed are you</span>
             <input

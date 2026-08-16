@@ -9,6 +9,7 @@ import {
 import { ChartRenderer } from "./chart-renderer";
 import { animateCount } from "./animate-count";
 import { themeAccent } from "./theme";
+import { runBatch, summarizeHunt, type HuntBatch } from "./hunt-sim";
 
 const REVEAL_MS = 200;
 const STOP_LINE_ID = "stop";
@@ -22,8 +23,10 @@ export function initAct1(): void {
   const confirmBtn = document.getElementById("act1-confirm") as HTMLButtonElement | null;
   const resultPanel = document.getElementById("act1-result");
   const tally = document.getElementById("act1-tally");
+  const presetButtons = document.querySelectorAll<HTMLButtonElement>("#act1-presets .chip");
+  const clusterHint = document.getElementById("act1-cluster-hint");
 
-  if (!canvas || !sizeInput || !sizeValue || !hint || !confirmBtn || !resultPanel || !tally) {
+  if (!canvas || !sizeInput || !sizeValue || !hint || !confirmBtn || !resultPanel || !tally || !clusterHint) {
     return;
   }
 
@@ -45,6 +48,7 @@ export function initAct1(): void {
   let stopPrice = 0;
   let revealTimer: ReturnType<typeof setTimeout> | null = null;
   let confirmed = false;
+  let clusterBatch: HuntBatch = runBatch(5, 500);
 
   const positionMultiplier = () => Number(sizeInput.value);
 
@@ -53,6 +57,19 @@ export function initAct1(): void {
     const min = swingLow - ACT1_STOP_MAX_OFFSET;
     const max = entryPrice - ACT1_STOP_MIN;
     return Math.min(max, Math.max(min, price));
+  };
+
+  const setStop = (price: number) => {
+    stopPrice = clampStop(price);
+    const distance = entryPrice - stopPrice;
+    hint.textContent = `Stop set ${distance.toFixed(2)} below entry.`;
+    renderer.setLine(STOP_LINE_ID, {
+      price: stopPrice,
+      color: accent,
+      label: "your stop",
+      draggable: true,
+    });
+    renderer.draw();
   };
 
   const resize = () => {
@@ -73,24 +90,15 @@ export function initAct1(): void {
 
     path = buildAct1Path(1000 + attempt * 37);
     entryPrice = path[ACT1_ENTRY_CANDLE_INDEX].close;
-    stopPrice = clampStop(path[ACT1_SWING_LOW_INDEX].low - ACT1_STOP_MIN);
+    clusterBatch = runBatch(5, 500 + attempt * 11);
+    clusterHint.hidden = true;
 
     renderer.setVisibleCount(path.length);
     const visible = path.slice(0, ACT1_ENTRY_CANDLE_INDEX + 1);
     renderer.setCandles(visible);
-    renderer.setLine(STOP_LINE_ID, {
-      price: stopPrice,
-      color: accent,
-      label: "your stop",
-      draggable: true,
-    });
-    renderer.onLineDrag(STOP_LINE_ID, (price) => {
-      stopPrice = clampStop(price);
-      const distance = entryPrice - stopPrice;
-      hint.textContent = `Stop set ${distance.toFixed(2)} below entry.`;
-    });
+    renderer.onLineDrag(STOP_LINE_ID, (price) => setStop(price));
+    setStop(path[ACT1_SWING_LOW_INDEX].low - ACT1_STOP_MIN);
     resize();
-    hint.textContent = `Stop set ${(entryPrice - stopPrice).toFixed(2)} below entry.`;
   };
 
   const finish = (stoppedAtIndex: number | null) => {
@@ -198,6 +206,33 @@ export function initAct1(): void {
 
   sizeInput.addEventListener("input", () => {
     sizeValue.textContent = `${sizeInput.value}x`;
+  });
+
+  presetButtons.forEach((btn) => {
+    btn.addEventListener("click", () => {
+      if (confirmed) return;
+      const swingLow = path[ACT1_SWING_LOW_INDEX]?.low ?? entryPrice;
+      switch (btn.dataset.preset) {
+        case "tight":
+          setStop(entryPrice - ACT1_STOP_MIN);
+          break;
+        case "wide":
+          setStop(swingLow - ACT1_STOP_MAX_OFFSET);
+          break;
+        default:
+          setStop(swingLow - ACT1_STOP_MIN);
+      }
+    });
+  });
+
+  canvas.addEventListener("click", (event) => {
+    if (confirmed) return;
+    const rect = canvas.getBoundingClientRect();
+    const clickedPrice = renderer.yToPrice(event.clientY - rect.top);
+    const distance = Math.abs(entryPrice - clickedPrice);
+    const summary = summarizeHunt(clusterBatch, distance);
+    clusterHint.hidden = false;
+    clusterHint.textContent = `≈${summary.triggered} other traders have stops within this band.`;
   });
 
   window.addEventListener("resize", resize);
