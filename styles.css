@@ -65,6 +65,47 @@ main {
   max-width: 64rem;
   margin: 0 auto;
   padding: 0 1.5rem 3rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.interactive-pane {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.2fr);
+  gap: 1.5rem;
+  align-items: start;
+}
+
+#char-picker {
+  align-content: start;
+  max-height: 22rem;
+  overflow-y: auto;
+  padding: 0.25rem;
+}
+
+.glyph-stage {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.map-wrap {
+  padding: 1rem;
+}
+
+.map-canvas {
+  height: 220px;
+}
+
+@media (width <= 720px) {
+  .interactive-pane {
+    grid-template-columns: 1fr;
+  }
+
+  #char-picker {
+    max-height: 12rem;
+  }
 }
 
 .chart-wrap {

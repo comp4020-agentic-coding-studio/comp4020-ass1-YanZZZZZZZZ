@@ -16,10 +16,62 @@
       </nav>
     </header>
 
-    <main id="char-picker"></main>
+    <main>
+      <section class="interactive-pane" aria-label="选字与字形">
+        <div id="char-picker" class="chip-row" role="group" aria-label="选择一个汉字"></div>
+
+        <div class="glyph-stage">
+          <p class="hint" id="glyph-caption" aria-live="polite">正在加载汉字数据…</p>
+          <div class="chart-wrap">
+            <canvas
+              id="glyph-canvas"
+              class="chart-canvas glyph-canvas"
+              role="img"
+              aria-label="字形演变：加载中"
+            ></canvas>
+            <p class="chart-fallback" id="glyph-fallback" hidden>
+              画布不可用 — 字形无法在此渲染。
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <section class="controls" id="era-controls" aria-label="时间滑块">
+        <label class="control-row">
+          <span>历史时期</span>
+          <input
+            type="range"
+            id="era-slider"
+            min="0"
+            max="0"
+            value="0"
+            step="1"
+            aria-label="拖动以选择历史时期"
+          />
+          <span id="era-value" class="control-value"></span>
+        </label>
+        <p class="hint" id="era-caption" aria-live="polite"></p>
+      </section>
+
+      <section class="chart-wrap map-wrap" aria-label="出土/通行地区示意图">
+        <canvas
+          id="region-canvas"
+          class="chart-canvas map-canvas"
+          role="img"
+          aria-label="地区示意图：加载中"
+        ></canvas>
+        <p class="chart-fallback" id="region-fallback" hidden>
+          画布不可用 — 地区示意图无法在此渲染。
+        </p>
+      </section>
+    </main>
 
     <footer class="footnote" id="about">
-      <p>Placeholder — rebuilding for the Hanzi Flow topic.</p>
+      <p>
+        本页所有字形均为程序生成的风格化示意（依据真实汉字字形叠加随机笔画抖动），
+        并非文字学考据或出土文物扫描；每个时期展示的地区为该字体通行/出土的代表性区域，
+        并非某个字的具体出土地点。
+      </p>
     </footer>
     <script type="module" src="./main.ts"></script>
   </body>
