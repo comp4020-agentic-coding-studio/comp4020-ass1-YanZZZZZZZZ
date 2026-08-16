@@ -32,8 +32,8 @@ export function buildAct1Path(seed: number): Candle[] {
 
   for (let i = 0; i < 8; i++) pushCandle(0.9, 1.2); // rally: confidence builds
   for (let i = 0; i < 2; i++) pushCandle(-0.6, 1.0); // pullback: swing low + entry
-  for (let i = 0; i < 6; i++) pushCandle(1.1, 1.3); // FOMO: price pushes higher
-  for (let i = 0; i < 5; i++) pushCandle(-1.4, 1.6); // reversal: stops get swept
+  for (let i = 0; i < 6; i++) pushCandle(1.0, 1.3); // FOMO: price pushes higher
+  for (let i = 0; i < 5; i++) pushCandle(-2.0, 1.6); // reversal: stops get swept
   for (let i = 0; i < 6; i++) pushCandle(0.8, 1.1); // recovery: price moves on without you
 
   return candles;
