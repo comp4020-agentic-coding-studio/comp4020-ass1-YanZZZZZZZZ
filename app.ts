@@ -41,7 +41,10 @@ function renderPicker(
   container: HTMLElement,
   characters: CharacterEntry[],
   onSelect: (entry: CharacterEntry) => void,
+  onPreview: (entry: CharacterEntry) => void,
+  onPreviewEnd: () => void,
 ): void {
+  const canHover = window.matchMedia("(hover: hover)").matches;
   container.innerHTML = "";
   for (const [category, entries] of groupByCategory(characters)) {
     const group = document.createElement("div");
@@ -62,11 +65,24 @@ function renderPicker(
       btn.dataset.char = entry.char;
       btn.setAttribute("aria-label", `${entry.char}（${entry.pinyin}）`);
       btn.addEventListener("click", () => onSelect(entry));
+      btn.addEventListener("focus", () => onPreview(entry));
+      btn.addEventListener("blur", onPreviewEnd);
+      if (canHover) {
+        btn.addEventListener("mouseenter", () => onPreview(entry));
+        btn.addEventListener("mouseleave", onPreviewEnd);
+      }
       row.appendChild(btn);
     }
     group.appendChild(row);
     container.appendChild(group);
   }
+}
+
+function fadeIn(canvas: HTMLCanvasElement): void {
+  if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+  canvas.classList.remove("is-fade-in");
+  void canvas.offsetWidth;
+  canvas.classList.add("is-fade-in");
 }
 
 export function initApp(): void {
@@ -90,19 +106,18 @@ export function initApp(): void {
     });
   };
 
-  const render = () => {
-    if (!data || !selected) return;
+  const draw = (entry: CharacterEntry) => {
+    if (!data) return;
     const era = data.eras[Number(slider.value)] ?? data.eras[0];
     if (eraValue) eraValue.textContent = era.label;
     if (eraCaption) {
       eraCaption.textContent = `${era.period} · 载体：${era.carrier} · 代表地区：${era.region}`;
     }
-    caption.textContent = `${selected.char}（${selected.pinyin}）— ${selected.note}`;
-    setActiveChip(selected.char);
+    caption.textContent = `${entry.char}（${entry.pinyin}）— ${entry.note}`;
 
     if (glyphCtx) {
       const box = syncCanvasSize(glyphCtx);
-      drawGlyphImpression(glyphCtx, box, selected.char, era);
+      drawGlyphImpression(glyphCtx, box, entry.char, era);
     }
 
     if (regionCtx) {
@@ -111,8 +126,24 @@ export function initApp(): void {
     }
   };
 
+  const render = () => {
+    if (!selected) return;
+    setActiveChip(selected.char);
+    draw(selected);
+  };
+
   const selectChar = (entry: CharacterEntry) => {
     selected = entry;
+    render();
+    if (glyphCtx) fadeIn(glyphCtx.canvas);
+  };
+
+  const previewChar = (entry: CharacterEntry) => {
+    setActiveChip(entry.char);
+    draw(entry);
+  };
+
+  const endPreview = () => {
     render();
   };
 
@@ -123,7 +154,7 @@ export function initApp(): void {
       data = loaded;
       slider.max = String(loaded.eras.length - 1);
       slider.disabled = false;
-      renderPicker(picker, loaded.characters, selectChar);
+      renderPicker(picker, loaded.characters, selectChar, previewChar, endPreview);
       const initial = loaded.characters[Math.floor(Math.random() * loaded.characters.length)];
       if (initial) selectChar(initial);
     })

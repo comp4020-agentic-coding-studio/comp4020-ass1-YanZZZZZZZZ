@@ -138,6 +138,26 @@ main {
   touch-action: none;
 }
 
+.chart-canvas.is-fade-in {
+  animation: glyph-fade 260ms ease;
+}
+
+@keyframes glyph-fade {
+  from {
+    opacity: 0.15;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .chart-canvas.is-fade-in {
+    animation: none;
+  }
+}
+
 .chart-fallback {
   padding: 1rem;
   color: var(--muted);
@@ -170,6 +190,37 @@ main {
 .control-row input[type="range"] {
   flex: 1 1 auto;
   accent-color: var(--accent);
+  appearance: none;
+  height: 6px;
+  border-radius: 999px;
+  background: linear-gradient(90deg, #b98a3d, #241f1a);
+}
+
+.control-row input[type="range"]::-webkit-slider-thumb {
+  appearance: none;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: var(--accent);
+  border: 2px solid #fff;
+  box-shadow: 0 1px 4px rgb(36 31 26 / 35%);
+  cursor: pointer;
+}
+
+.control-row input[type="range"]::-moz-range-track {
+  height: 6px;
+  border-radius: 999px;
+  background: linear-gradient(90deg, #b98a3d, #241f1a);
+}
+
+.control-row input[type="range"]::-moz-range-thumb {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: var(--accent);
+  border: 2px solid #fff;
+  box-shadow: 0 1px 4px rgb(36 31 26 / 35%);
+  cursor: pointer;
 }
 
 .control-value {
