@@ -1,5 +1,6 @@
 import { mulberry32 } from "./rng";
 import { runBatch, HUNT_SIM_MAX_DISTANCE } from "./hunt-sim";
+import { themeAccent } from "./theme";
 import {
   computeLayout,
   createParticles,
@@ -40,6 +41,7 @@ export function initAct3(): void {
 
   const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   const rng = mulberry32(7);
+  const accent = themeAccent(canvas);
 
   let dpr = 1;
   let layout: PoolLayout;
@@ -74,7 +76,7 @@ export function initAct3(): void {
     if (!ctx) return;
     ctx.beginPath();
     ctx.arc(pool.x, pool.y, pool.radius, 0, Math.PI * 2);
-    ctx.strokeStyle = "#f0883e";
+    ctx.strokeStyle = accent;
     ctx.lineWidth = 1.5;
     ctx.stroke();
     ctx.fillStyle = "#8b93a7";

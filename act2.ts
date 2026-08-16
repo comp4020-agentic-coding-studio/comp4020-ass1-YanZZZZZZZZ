@@ -1,6 +1,5 @@
 import { runBatch, summarizeHunt, buildHistogram, HUNT_SIM_MAX_DISTANCE, type HuntBatch } from "./hunt-sim";
-
-const DEPTH_COLOR = "#f0883e";
+import { themeAccent } from "./theme";
 
 export function initAct2(): void {
   const canvas = document.getElementById("act-2-canvas") as HTMLCanvasElement | null;
@@ -24,6 +23,7 @@ export function initAct2(): void {
     return;
   }
 
+  const accent = themeAccent(canvas);
   let dpr = 1;
   let batch: HuntBatch = runBatch(Number(densityInput.value));
   let depth = 3;
@@ -86,9 +86,9 @@ export function initAct2(): void {
     });
 
     const depthX = xForDistance(depth);
-    ctx.strokeStyle = DEPTH_COLOR;
+    ctx.strokeStyle = accent;
     ctx.lineWidth = 2;
-    ctx.shadowColor = DEPTH_COLOR;
+    ctx.shadowColor = accent;
     ctx.shadowBlur = 8;
     ctx.beginPath();
     ctx.moveTo(depthX, 0);

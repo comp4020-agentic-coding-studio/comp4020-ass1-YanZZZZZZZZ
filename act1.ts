@@ -8,6 +8,7 @@ import {
 } from "./candles";
 import { ChartRenderer } from "./chart-renderer";
 import { animateCount } from "./animate-count";
+import { themeAccent } from "./theme";
 
 const REVEAL_MS = 200;
 const STOP_LINE_ID = "stop";
@@ -36,6 +37,7 @@ export function initAct1(): void {
   }
 
   const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const accent = themeAccent(canvas);
 
   let attempt = 1;
   let path: Candle[] = [];
@@ -78,7 +80,7 @@ export function initAct1(): void {
     renderer.setCandles(visible);
     renderer.setLine(STOP_LINE_ID, {
       price: stopPrice,
-      color: "#f0883e",
+      color: accent,
       label: "your stop",
       draggable: true,
     });

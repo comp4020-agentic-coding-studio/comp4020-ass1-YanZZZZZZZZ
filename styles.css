@@ -124,11 +124,40 @@ a {
 }
 
 .act {
+  position: relative;
   align-items: stretch;
   text-align: left;
   max-width: 48rem;
   margin: 0 auto;
   width: 100%;
+}
+
+.act::before {
+  content: "";
+  position: absolute;
+  inset: -10% -20%;
+  z-index: -1;
+  background: radial-gradient(
+    circle at 50% 20%,
+    rgb(var(--accent-rgb, 240 136 62) / 12%),
+    transparent 60%
+  );
+  pointer-events: none;
+}
+
+.act[data-act="1"] {
+  --accent: #f0883e;
+  --accent-rgb: 240 136 62;
+}
+
+.act[data-act="2"] {
+  --accent: #3fd0c9;
+  --accent-rgb: 63 208 201;
+}
+
+.act[data-act="3"] {
+  --accent: #a78bfa;
+  --accent-rgb: 167 139 250;
 }
 
 .act-kicker {
@@ -158,10 +187,12 @@ a {
 
 .chart-wrap {
   position: relative;
-  border: 1px solid var(--border);
-  border-radius: 8px;
+  border: 1px solid rgb(var(--accent-rgb, 240 136 62) / 18%);
+  border-radius: 14px;
   background: var(--panel);
-  box-shadow: 0 1px 0 rgb(255 255 255 / 3%) inset;
+  box-shadow:
+    0 1px 0 rgb(255 255 255 / 3%) inset,
+    0 12px 32px rgb(var(--accent-rgb, 240 136 62) / 8%);
   overflow: hidden;
 }
 
@@ -180,8 +211,8 @@ a {
 .controls {
   margin-top: 1.25rem;
   padding: 1rem 1.25rem;
-  border: 1px solid var(--border);
-  border-radius: 8px;
+  border: 1px solid rgb(var(--accent-rgb, 240 136 62) / 14%);
+  border-radius: 14px;
   background: var(--panel);
   display: flex;
   flex-direction: column;
@@ -240,16 +271,26 @@ button:hover:not(:disabled) {
 .btn-primary {
   background: var(--accent);
   border-color: var(--accent);
-  color: #0b0e14;
+  color: var(--bg);
   font-weight: 600;
 }
 
 .result-panel {
   margin-top: 1.25rem;
   padding: 1rem 1.25rem;
-  border: 1px solid var(--border);
-  border-radius: 8px;
+  border: 1px solid rgb(var(--accent-rgb, 240 136 62) / 20%);
+  border-radius: 14px;
   background: var(--panel);
+  box-shadow: 0 12px 32px rgb(var(--accent-rgb, 240 136 62) / 10%);
+}
+
+.control-value,
+.result-panel strong,
+#act2-readout strong,
+#act2-readout span {
+  font-variant-numeric: tabular-nums;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  letter-spacing: -0.01em;
 }
 
 .result-point {
